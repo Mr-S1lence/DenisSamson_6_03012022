@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path'); //Donne accès au chemin de notre système de fichier
 
+
+const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');
 
 //connexion bdd
@@ -28,7 +31,9 @@ app.use(express.json());//Permet d'accèder au corps de la requête.
 //Intercepte toutes les requêtes contentType json et nous le mets à disposition dans req.body.
 //Anciennement body-parser
 
+app.use('/images', express.static(path.join(__dirname, 'images'))); //requête envoyé à /images
 
+app.use('/api/sauces', stuffRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;
