@@ -17,6 +17,42 @@ exports.createThing = (req, res, next) => {
       .catch(error => res.status(400).json({ error })); //raccourcie js "error: error" / Erreur générée par mongoose
 };
 
+exports.like = (req, res, next) => {
+    switch(req.body.like){
+        case 1:
+            Thing.updateMany({ _id: req.params.id }, { $push: {"usersLiked" : req.body.userId} ,  $inc: {"likes" : 1 }})
+            .then(() => res.status(200).json({ message: 'sauce liké !'}))
+            .catch(error => res.status(400).json({ error }));
+        break;
+
+        case 0:
+            Thing.findOne({ _id: req.params.id })
+            .then((thing) => {
+                if(thing.usersLiked.includes(req.body.userId)){
+                    Thing.updateMany({ _id: req.params.id }, { $pull: {"usersLiked" : req.body.userId},  $inc: {"likes" : -1 } })
+                    .then(() => res.status(200).json({ message: 'Aucun avis !'}))
+                    .catch(error => res.status(400).json({ error }));
+                }
+                if(thing.usersDisliked.includes(req.body.userId)){
+                    Thing.updateMany({ _id: req.params.id }, { $pull: {"usersDisliked" : req.body.userId} ,  $inc: {"dislikes" : -1 } })
+                    .then(() => res.status(200).json({ message: 'Aucun avis !'}))
+                    .catch(error => res.status(400).json({ error }));
+                }
+            })
+            .catch(error => res.status(404).json({ error }));
+        break;
+
+        case -1:
+            Thing.updateMany({ _id: req.params.id }, { $push: {"usersDisliked" : req.body.userId} ,  $inc: {"dislikes" : 1 } })
+            .then(() => res.status(200).json({ message: 'sauce disliké !'}))
+            .catch(error => res.status(400).json({ error }));
+        break;
+
+        default: console.log(error);
+    }
+
+};
+
 exports.modifyThing = (req, res, next) => {
     const thingObject = req.file ? //vérification si il y a une nouvelle image
       {

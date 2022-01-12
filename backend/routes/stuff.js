@@ -8,6 +8,8 @@ const multer = require('../middleware/multer-config');
 
 router.post('/',auth, multer, stuffCtrl.createThing); //pas de parenthèses pour stuffCtrl.createThing ici car on appelle pas la fonction mais on l'applique
 
+router.post('/:id/like',auth, multer, stuffCtrl.like);
+
 //Modification d'un produit
 router.put('/:id',auth, multer, stuffCtrl.modifyThing);
 
