@@ -1,5 +1,14 @@
 const multer = require('multer');
 
+//function pour supprimer l'extension du nom de fichier.
+function removeExtension(filename){
+    let lastDotPosition = filename.lastIndexOf(".");
+    console.log(lastDotPosition);
+    if (lastDotPosition === -1) return filename;
+    else return filename.substr(0, lastDotPosition);
+}
+
+
 const MIME_TYPES = {//constante dictionnaire de type MIME
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
@@ -11,9 +20,10 @@ const storage = multer.diskStorage({ //funtion diskStorage de multer pour enregi
         callback(null, 'images')//null -> pas d'erreur et nom du dossier
     },
     filename: (req, file, callback) => {//modifie le nom du fichier pour éviter les doublons
-        const name = file.originalname.split(' ').join('_'); //Remplacement des espaces par des underscores
+        let name = file.originalname.split(' ').join('_'); //Remplacement des espaces par des underscores
         const extension = MIME_TYPES[file.mimetype];
-        callback(null, name + Date.now() + '.' + extension); //génération d'un nom de fichier et ajout d'un timestamp
+        callback(null, removeExtension(name) + Date.now() + '.' + extension); //génération d'un nom de fichier et ajout d'un timestamp
+        console.log(name);
     }
 })
 
