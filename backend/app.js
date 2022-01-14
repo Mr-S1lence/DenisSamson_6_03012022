@@ -1,13 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path'); //Donne accès au chemin de notre système de fichier
+const bdd = require('dotenv').config();
 
 
 const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');
 
 //connexion bdd
-mongoose.connect('mongodb+srv://samsond:azerty@cluster0.p45tz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect(process.env.BDD,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
