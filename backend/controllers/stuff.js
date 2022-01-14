@@ -54,8 +54,18 @@ exports.like = (req, res, next) => {
 };
 
 exports.modifyThing = (req, res, next) => {
+  if(req.file){
+    Thing.findOne({ _id: req.params.id })
+    .then(thing => {
+      const filename = thing.imageUrl.split('/images/')[1];
+      fs.unlink(`images/${filename}`, () => {
+      });
+    })
+    .catch(error => res.status(500).json({ error }));
+  }
     const thingObject = req.file ? //vérification si il y a une nouvelle image
       {
+        
         ...JSON.parse(req.body.sauce),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
       } : { ...req.body }
