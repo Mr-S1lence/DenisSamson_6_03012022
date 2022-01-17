@@ -3,7 +3,6 @@ const multer = require('multer');
 //function pour supprimer l'extension du nom de fichier.
 function removeExtension(filename){
     let lastDotPosition = filename.lastIndexOf(".");
-    console.log(lastDotPosition);
     if (lastDotPosition === -1) return filename;
     else return filename.substr(0, lastDotPosition);
 }
@@ -23,7 +22,6 @@ const storage = multer.diskStorage({ //funtion diskStorage de multer pour enregi
         let name = file.originalname.split(' ').join('_'); //Remplacement des espaces par des underscores
         const extension = MIME_TYPES[file.mimetype];
         callback(null, removeExtension(name) + Date.now() + '.' + extension); //génération d'un nom de fichier et ajout d'un timestamp
-        console.log(name);
     }
 })
 
