@@ -5,9 +5,10 @@ const stuffCtrl = require('../controllers/stuff');
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 
-
+//Création d'un produit
 router.post('/',auth, multer, stuffCtrl.createSauce); //pas de parenthèses pour stuffCtrl.createSauce ici car on appelle pas la fonction mais on l'applique
 
+//like
 router.post('/:id/like',auth, multer, stuffCtrl.like);
 
 //Modification d'un produit

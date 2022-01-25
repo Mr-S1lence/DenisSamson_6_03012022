@@ -37,7 +37,7 @@ exports.login = (req, res, next) =>{
                         userId: user._id, //identifiant de l'utilisateur dans la BDD
                         token: jwt.sign( //fonction sign du package jwt
                             { userId: user._id }, //données que l'on veut encodé (payload)
-                            'RANDOM_TOKEN_SECRET',
+                            process.env.SECRET_TOKEN,
                             { expiresIn: '24h' }
                         )
                     });
